@@ -4,6 +4,8 @@
 
 🙌 Free yourself from the hassle of manually managing loading states in your React components for async tasks.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 ## Installation
 
 #### npm
