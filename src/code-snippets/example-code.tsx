@@ -1,5 +1,33 @@
-// Auto-generated file - do not edit manually
-export const OldWayCode = `function OldWay() {
+/**
+ * This file's contents will be consumed into code snippets for documentation use package script:
+ * bun run create-code-snippets
+ *
+ * see scripts/create-code-snippets.ts for details
+ */
+
+import { useState } from 'react';
+import { Alert, Button, Group, Stack, Switch, Text } from '@mantine/core';
+import { PiWarningCircleDuotone } from 'react-icons/pi';
+
+import { useLoadingState } from '../../lib/useLoadingState';
+
+function mockNetworkRequest(props: { throwError?: boolean } = {}) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (props.throwError) {
+        reject(new Error('Some kind of mysterious network error!'));
+      }
+      resolve(true);
+    }, 3000);
+  });
+}
+
+function mockNetworkRequestError() {
+  return mockNetworkRequest({ throwError: true });
+}
+
+// @extract
+export function OldWay() {
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleClick() {
@@ -22,9 +50,10 @@ export const OldWayCode = `function OldWay() {
       Click To Run Task
     </Button>
   );
-}`;
+}
 
-export const SimpleCaseCode = `function SimpleCase() {
+// @extract
+export function SimpleCase() {
   const [runTask, { isLoading }] = useLoadingState();
 
   async function handleClick() {
@@ -43,9 +72,10 @@ export const SimpleCaseCode = `function SimpleCase() {
       Click To Run Task
     </Button>
   );
-}`;
+}
 
-export const ErrorHandlingCode = `function ErrorHandling() {
+// @extract
+export function ErrorHandling() {
   const [runTask, { isLoading }] = useLoadingState();
   const [error, setError] = useState<Error | null>(null);
 
@@ -85,9 +115,16 @@ export const ErrorHandlingCode = `function ErrorHandling() {
       )}
     </Stack>
   );
-}`;
+}
 
-export const ManyItemsCode = `function ManyItems() {
+//an array of 10 items that has an id property and a name
+const data = Array.from({ length: 10 }, (_, i) => ({
+  id: i.toString(),
+  name: `Item ${i}`,
+}));
+
+// @extract
+export function ManyItems() {
   // track as many loading states as you want with a single line of code:
   const [runTask, { isLoading, isIdLoading }] = useLoadingState();
   const [oneAtATime, setOneAtATime] = useState(false);
@@ -121,4 +158,4 @@ export const ManyItemsCode = `function ManyItems() {
       ))}
     </>
   );
-}`;
+}
