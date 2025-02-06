@@ -29,6 +29,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b ./tsconfig.lib.json && vite build",
+    "build:app": "tsc -b ./tsconfig.app.json && vite build --config vite.app.config.ts",
     "test": "vitest run",
     "lint": "eslint . --quiet",
     "format:write": "prettier --write \"**/*.{ts,tsx}\" --cache",
