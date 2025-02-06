@@ -2,7 +2,7 @@
 
 ### A React Hook for Managing Loading States
 
-🙌 Finally free yourself from the hassle of manually managing loading states in your React components for async tasks.
+🙌 Free yourself from the hassle of manually managing loading states in your React components for async tasks.
 
 ## Installation
 

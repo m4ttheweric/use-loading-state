@@ -43,8 +43,8 @@ function App() {
                 A React Hook for Managing Loading States
               </Text>
               <Blockquote>
-                🙌 Finally free yourself from the hassle of manually managing
-                loading states in your React components for async tasks.
+                🙌 Free yourself from the hassle of manually managing loading
+                states in your React components for async tasks.
               </Blockquote>
             </Stack>
             <Title order={2}>Examples:</Title>
