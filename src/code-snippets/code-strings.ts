@@ -92,6 +92,7 @@ export const ManyItemsCode = `function ManyItems() {
   const [oneAtATime, setOneAtATime] = useState(false);
 
   function handleItemClick(id: string) {
+    // this time, runTask takes an object with a task and loadingId to identify the task
     runTask({
       loadingId: id,
       task: () => mockNetworkRequest(),
@@ -109,11 +110,13 @@ export const ManyItemsCode = `function ManyItems() {
       </Group>
       {data.map(item => (
         <Button
-          size="xs"
-          key={item.id}
+          // use the isIdLoading function to determine if a specific task is loading
           loading={isIdLoading(item.id)}
+          // optionally, you could disable the button if another task is loading
           disabled={oneAtATime && !isIdLoading(item.id) && isLoading}
           onClick={() => handleItemClick(item.id)}
+          size="xs"
+          key={item.id}
         >
           Run Item {item.id}'s Task
         </Button>
