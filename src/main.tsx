@@ -7,7 +7,7 @@ import '@mantine/code-highlight/styles.css';
 import { ColorSchemeScript, MantineProvider as Provider } from '@mantine/core';
 
 import App from './App.tsx';
-import { mantineTheme } from './mantineTheme.tsx';
+import { mantineTheme } from './mantineTheme';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

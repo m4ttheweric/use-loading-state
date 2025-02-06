@@ -29,8 +29,8 @@ function App() {
   return (
     <AppShell header={{ height: 50 }} padding={'lg'}>
       <AppShell.Header px={'md'}>
-        <Group wrap="nowrap" justify="space-between" h={'100%'}>
-          <Title order={4}>@m4ttheweric/use-loading-state</Title>
+        <Group justify="space-between" h={'100%'}>
+          <Text fw={500}>@m4ttheweric/use-loading-state</Text>
           <SocialLinks />
         </Group>
       </AppShell.Header>
