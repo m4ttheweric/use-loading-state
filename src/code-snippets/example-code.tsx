@@ -58,7 +58,6 @@ export function SimpleCase() {
 
   async function handleClick() {
     // wrap your async task in the runTask function like this for simple cases.
-    // even if you don't handle errors (please do), the hook handles them gracefully!
     await runTask(() => mockNetworkRequest());
   }
 
