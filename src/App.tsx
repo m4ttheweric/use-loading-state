@@ -57,7 +57,6 @@ function App() {
                     for you.
                   </>
                 }
-                codeTitle="Try It:"
                 code={{
                   fileName: 'SimpleCase.tsx',
                   code: SimpleCaseCode,
@@ -76,7 +75,6 @@ function App() {
                     errors (you should!), your loading state will still work!
                   </>
                 }
-                codeTitle="Try It:"
                 code={{
                   fileName: 'ErrorHandling.tsx',
                   code: ErrorHandlingCode,
@@ -102,7 +100,6 @@ function App() {
                     </Text>
                   </>
                 }
-                codeTitle="Try It:"
                 code={{
                   fileName: 'ManyItems.tsx',
                   code: ManyItemsCode,

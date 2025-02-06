@@ -30,12 +30,12 @@ export function Example({
       </Anchor>
       {description && <Text>{description}</Text>}
       <Card withBorder>
-        <Stack align="center">
+        <Stack align="center" p={'lg'} mb={'md'}>
           {codeTitle && <Title order={4}>{codeTitle}</Title>}
           {/* <ErrorHandling /> */}
           {renderExample}
         </Stack>
-        <Card.Section mt={'xl'}>
+        <Card.Section>
           <CodeHighlightTabs
             withExpandButton
             defaultExpanded={false}

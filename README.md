@@ -1,6 +1,28 @@
 ## useLoadingState()
 
-This repo uses Bun.
+### A React Hook for Managing Loading States
+
+🙌 Finally free yourself from the hassle of manually managing loading states in your React components for async tasks.
+
+## Installation
+
+#### npm
+
+```
+npm install @m4ttheweric/use-loading-state
+```
+
+#### yarn
+
+```
+yarn add @m4ttheweric/use-loading-state
+```
+
+#### bun
+
+```
+bun add @m4ttheweric/use-loading-state
+```
 
 ## Usage
 
