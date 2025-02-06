@@ -37,7 +37,8 @@
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "release": "node --no-warnings publish.mjs",
-    "create-snippets": "tsx scripts/create-code-snippets.ts"
+    "create-snippets": "tsx scripts/create-code-snippets.ts",
+    "pre-release": "bun run build && bun run type-check && bun run lint && bun run format:write"
   },
   "peerDependencies": {
     "react": "^18.0.0",
