@@ -4,7 +4,7 @@ This repo uses Bun.
 
 ## Usage
 
-Coming soon.
+See code examples and live demo: https://use-loading-state.netlify.app/
 
 ## Local Development
 
