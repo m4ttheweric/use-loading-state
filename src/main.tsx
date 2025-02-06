@@ -14,9 +14,9 @@ import App from './App.tsx';
 
 const mantineTheme = createTheme({
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  primaryColor: 'indigo',
-  primaryShade: 6,
-  defaultRadius: 'xl',
+  primaryColor: 'gray',
+  primaryShade: 7,
+  defaultRadius: 'lg',
   cursorType: 'pointer',
   headings: {
     fontWeight: '500',
