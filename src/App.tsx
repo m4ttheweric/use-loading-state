@@ -1,4 +1,5 @@
 import {
+  Anchor,
   AppShell,
   Blockquote,
   Code,
@@ -6,8 +7,10 @@ import {
   Group,
   Stack,
   Text,
+  ThemeIcon,
   Title,
 } from '@mantine/core';
+import { SiMantine } from 'react-icons/si';
 
 import {
   ErrorHandlingCode,
@@ -108,6 +111,25 @@ function App() {
               />
             </Stack>
           </Stack>
+          <Anchor href="https://mantine.dev/" target="_blank">
+            <Group
+              gap={'xs'}
+              wrap="nowrap"
+              mt={'4rem'}
+              justify="flex-end"
+              c={'muted'}
+            >
+              This project uses Mantine for it's UI and examples!{' '}
+              <ThemeIcon
+                color="blue"
+                variant="subtle"
+                size={'lg'}
+                radius={'sm'}
+              >
+                <SiMantine size={30} />
+              </ThemeIcon>
+            </Group>
+          </Anchor>
         </Container>
       </AppShell.Main>
     </AppShell>
