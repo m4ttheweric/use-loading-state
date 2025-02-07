@@ -2,10 +2,10 @@ export function mockAsyncOperation(props: { throwError?: boolean } = {}) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (props.throwError) {
-        reject(new Error('Some kind of mysterious network error!'));
+        reject(new Error('An error occurred in your fake async operation!'));
       }
       resolve(true);
-    }, 3000);
+    }, 1500);
   });
 }
 

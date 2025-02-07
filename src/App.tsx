@@ -81,7 +81,7 @@ function App() {
               justify="flex-end"
               c={'muted'}
             >
-              This project uses Mantine for it's UI and examples!{' '}
+              This page uses Mantine
               <ThemeIcon
                 color="blue"
                 variant="subtle"
