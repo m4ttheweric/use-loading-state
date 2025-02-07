@@ -1,30 +1,6 @@
 // Auto-generated file - do not edit manually
-export const OldWayCode = `function OldWay() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function handleClick() {
-    // need to manually set loading state
-    setIsLoading(true);
-
-    try {
-      await mockNetworkRequest();
-
-      // your code is littered with loading state management
-      setIsLoading(false);
-    } catch {
-      // you have to remember to set loading state back to false in your catch block
-      setIsLoading(false);
-    }
-  }
-
-  return (
-    <Button loading={isLoading} onClick={handleClick} size="xs">
-      Click To Run Task
-    </Button>
-  );
-}`;
-
-export const SimpleCaseCode = `function SimpleCase() {
+export const BetterWaysCode = {
+  SimpleCase: `function SimpleCase() {
   const [runTask, { isLoading }] = useLoadingState();
 
   async function handleClick() {
@@ -42,9 +18,8 @@ export const SimpleCaseCode = `function SimpleCase() {
       Click To Run Task
     </Button>
   );
-}`;
-
-export const ErrorHandlingCode = `function ErrorHandling() {
+}`,
+  ErrorHandling: `function ErrorHandling() {
   const [runTask, { isLoading }] = useLoadingState();
   const [error, setError] = useState<Error | null>(null);
 
@@ -64,29 +39,30 @@ export const ErrorHandlingCode = `function ErrorHandling() {
 
   return (
     <Stack align="center">
-      <Text>Both buttons use the same loading state</Text>
       <Button loading={isLoading} onClick={noHandling} size="xs">
         No Error Handling
       </Button>
-      <Button
-        loading={isLoading}
-        onClick={errorHandling}
-        size="xs"
-        color="teal"
-      >
-        With Error Handling
-      </Button>
-      {error && (
-        <Alert icon={<PiWarningCircleDuotone />} color={'red'}>
-          <Text fw={500}>You handled this error:</Text>
-          {error.message}
-        </Alert>
-      )}
+      <Popover withArrow opened={!!error}>
+        <Popover.Target>
+          <Button
+            loading={isLoading}
+            onClick={errorHandling}
+            size="xs"
+            color="teal"
+          >
+            With Error Handling
+          </Button>
+        </Popover.Target>
+        <Popover.Dropdown p={0} bg={'var(--mantine-color-red-light)'}>
+          <Alert icon={<PiWarningCircleDuotone />} color={'red'}>
+            {error?.message}
+          </Alert>
+        </Popover.Dropdown>
+      </Popover>
     </Stack>
   );
-}`;
-
-export const ManyItemsCode = `function ManyItems() {
+}`,
+  ManyItems: `function ManyItems() {
   // track as many loading states as you want with a single line of code:
   const [runTask, { isLoading, isIdLoading }] = useLoadingState();
   const [oneAtATime, setOneAtATime] = useState(false);
@@ -108,7 +84,7 @@ export const ManyItemsCode = `function ManyItems() {
         />
         Only allow one at a time to load
       </Group>
-      {data.map(item => (
+      {mockItems.map(item => (
         <Button
           // use the isIdLoading function to determine if a specific task is loading
           loading={isIdLoading(item.id)}
@@ -123,4 +99,102 @@ export const ManyItemsCode = `function ManyItems() {
       ))}
     </>
   );
-}`;
+}`,
+};
+
+export const OldWaysCode = {
+  SingleItem: `function SingleItem() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleClick() {
+    // manually set loading state
+    setIsLoading(true);
+
+    try {
+      await mockNetworkRequest();
+    } catch {
+      // handle your error!
+    }
+
+    // you have to remember to set loading state back to false
+    setIsLoading(false);
+  }
+
+  return (
+    <Button loading={isLoading} onClick={handleClick} size="xs">
+      Click To Run Task
+    </Button>
+  );
+}`,
+  ManyItemsSingleFlag: `function ManyItemsSingleFlag() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleClick() {
+    // manually set loading state
+    setIsLoading(true);
+
+    try {
+      await mockNetworkRequest();
+    } catch {
+      // handle your error!
+    }
+    // you have to remember to set loading state back to false
+    setIsLoading(false);
+  }
+
+  return (
+    <Stack>
+      <Text>All buttons share a single loading state. Not ideal 😅</Text>
+      {mockItems.map((_, i) => (
+        <Button loading={isLoading} onClick={handleClick} size="xs" key={i}>
+          Run Item {i + 1}'s Task
+        </Button>
+      ))}
+    </Stack>
+  );
+}`,
+  ManyItemsMultipleFlags: `function ManyItemsMultipleFlags() {
+  const [loadingIndexes, setLoadingIndexes] = useState<number[]>([]);
+
+  async function handleClick(itemIndex: number) {
+    // mutate the array to add your item index
+    setLoadingIndexes(prev => [...prev, itemIndex]);
+
+    try {
+      await mockNetworkRequest();
+    } catch {
+      // handle your error!
+    }
+    // perform an arra filter to remove your item index
+    setLoadingIndexes(prev => prev.filter(i => i !== itemIndex));
+  }
+
+  return (
+    <Stack maw={600} align="center">
+      <Text>
+        This example uses a state array of indexes to represent loading items.
+      </Text>
+      <Text>
+        While this works, we have to mutate the array state before and after our
+        task. This is cumbersome, litters your code with state management, and
+        won't scale well if there are many items.
+      </Text>
+      <Text>
+        <Code>useLoadingState()</Code> uses <Code>Set</Code>'s under the hood to
+        ensure the best performance, and handles managing the state so you don't
+        have to litter your code with state mutations!
+      </Text>
+      {mockItems.map((_, i) => (
+        <Button
+          loading={loadingIndexes.includes(i)}
+          onClick={() => handleClick(i)}
+          size="xs"
+          key={i}
+        >
+          Run Item {i + 1}'s Task
+        </Button>
+      ))}
+    </Stack>
+  );
+}`,
+};

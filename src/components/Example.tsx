@@ -1,9 +1,23 @@
 import {
   CodeHighlightTabs,
   CodeHighlightTabsCode,
+  CodeHighlightTabsProps,
 } from '@mantine/code-highlight';
 import { Anchor, Card, Group, Stack, Text, Title } from '@mantine/core';
 import { FaLink } from 'react-icons/fa';
+
+import '../code-snippets/code-strings';
+
+type ExampleProps = {
+  hashLink: string;
+  title: React.ReactNode;
+  description: React.ReactNode;
+  code: CodeHighlightTabsCode | CodeHighlightTabsCode[];
+  codeTitle?: React.ReactNode;
+  renderExample: React.ReactNode;
+  activeTab?: CodeHighlightTabsProps['activeTab'];
+  onTabChange?: CodeHighlightTabsProps['onTabChange'];
+};
 
 export function Example({
   hashLink,
@@ -12,14 +26,8 @@ export function Example({
   codeTitle,
   code,
   renderExample,
-}: {
-  hashLink: string;
-  title: React.ReactNode;
-  description: React.ReactNode;
-  code: CodeHighlightTabsCode;
-  codeTitle?: React.ReactNode;
-  renderExample: React.ReactNode;
-}) {
+  ...tabProps
+}: ExampleProps) {
   return (
     <Stack id={hashLink.replace('#', '')}>
       <Anchor href={hashLink}>
@@ -32,14 +40,15 @@ export function Example({
       <Card withBorder>
         <Stack align="center" p={'lg'} mb={'md'}>
           {codeTitle && <Title order={4}>{codeTitle}</Title>}
-          {/* <ErrorHandling /> */}
+
           {renderExample}
         </Stack>
         <Card.Section>
           <CodeHighlightTabs
             withExpandButton
             defaultExpanded={false}
-            code={[code]}
+            code={Array.isArray(code) ? code : [code]}
+            {...tabProps}
           />
         </Card.Section>
       </Card>
