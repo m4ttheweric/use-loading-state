@@ -6,7 +6,7 @@ export function useLoadingState<IdType extends string = string>(
   defaultTask?: () => Promise<unknown>
 ) {
   const [isLoading, setLoading] = useState(false);
-  const [loadingIds, setLoadingIds] = useState<IdType[]>([]);
+  const [loadingIds, setLoadingIds] = useState<Set<IdType>>(new Set());
 
   const performAsyncTask = useCallback(
     (params?: AsyncTaskOptions<IdType>) => {
@@ -24,7 +24,7 @@ export function useLoadingState<IdType extends string = string>(
       setLoading(true);
 
       if (loadingId) {
-        setLoadingIds(prev => [...prev, loadingId]);
+        setLoadingIds(prev => new Set(prev).add(loadingId));
       }
 
       return task()
@@ -33,14 +33,20 @@ export function useLoadingState<IdType extends string = string>(
         })
         .finally(() => {
           setLoading(false);
-          setLoadingIds(prev => prev.filter(id => id !== loadingId));
+          if (loadingId) {
+            setLoadingIds(prev => {
+              const newSet = new Set(prev);
+              newSet.delete(loadingId);
+              return newSet;
+            });
+          }
         });
     },
     [defaultTask]
   );
 
   const isIdLoading = useCallback(
-    (id: IdType) => loadingIds.includes(id),
+    (id: IdType) => loadingIds.has(id),
     [loadingIds]
   );
 
