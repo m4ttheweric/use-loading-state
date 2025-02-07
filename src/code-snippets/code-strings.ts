@@ -84,19 +84,21 @@ export const BetterWaysCode = {
         />
         Only allow one at a time to load
       </Group>
-      {mockItems.map(item => (
-        <Button
-          // use the isIdLoading function to determine if a specific task is loading
-          loading={isIdLoading(item.id)}
-          // optionally, you could disable the button if another task is loading
-          disabled={oneAtATime && !isIdLoading(item.id) && isLoading}
-          onClick={() => handleItemClick(item.id)}
-          size="xs"
-          key={item.id}
-        >
-          Run Item {item.id}'s Task
-        </Button>
-      ))}
+      <Group wrap="wrap">
+        {mockItems.map(item => (
+          <Button
+            // use the isIdLoading function to determine if a specific task is loading
+            loading={isIdLoading(item.id)}
+            // optionally, you could disable the button if another task is loading
+            disabled={oneAtATime && !isIdLoading(item.id) && isLoading}
+            onClick={() => handleItemClick(item.id)}
+            size="xs"
+            key={item.id}
+          >
+            Run Item {item.id}'s Task
+          </Button>
+        ))}
+      </Group>
     </>
   );
 }`,
@@ -121,9 +123,12 @@ export const OldWaysCode = {
   }
 
   return (
-    <Button loading={isLoading} onClick={handleClick} size="xs">
-      Click To Run Task
-    </Button>
+    <Stack align="center">
+      <Text>Manually manging the state with a single item is not too bad!</Text>
+      <Button loading={isLoading} onClick={handleClick} size="xs">
+        Click To Run Task
+      </Button>
+    </Stack>
   );
 }`,
   ManyItemsSingleFlag: `function ManyItemsSingleFlag() {
@@ -143,8 +148,10 @@ export const OldWaysCode = {
   }
 
   return (
-    <Stack>
-      <Text>All buttons share a single loading state. Not ideal 😅</Text>
+    <Stack align="center">
+      <Text>
+        But what do you do when there are many items? This is not ideal 😅
+      </Text>
       {mockItems.map((_, i) => (
         <Button loading={isLoading} onClick={handleClick} size="xs" key={i}>
           Run Item {i + 1}'s Task
@@ -170,7 +177,7 @@ export const OldWaysCode = {
   }
 
   return (
-    <Stack maw={600} align="center">
+    <Stack align="start">
       <Text>
         This example uses a state array of indexes to represent loading items.
       </Text>
@@ -184,16 +191,18 @@ export const OldWaysCode = {
         ensure the best performance, and handles managing the state so you don't
         have to litter your code with state mutations!
       </Text>
-      {mockItems.map((_, i) => (
-        <Button
-          loading={loadingIndexes.includes(i)}
-          onClick={() => handleClick(i)}
-          size="xs"
-          key={i}
-        >
-          Run Item {i + 1}'s Task
-        </Button>
-      ))}
+      <Group wrap="wrap">
+        {mockItems.map((_, i) => (
+          <Button
+            loading={loadingIndexes.includes(i)}
+            onClick={() => handleClick(i)}
+            size="xs"
+            key={i}
+          >
+            Run Item {i + 1}'s Task
+          </Button>
+        ))}
+      </Group>
     </Stack>
   );
 }`,

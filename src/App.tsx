@@ -44,7 +44,7 @@ function App() {
                 states in your React components for async tasks.
               </Blockquote>
             </Stack>
-            <Title order={2}>What You Do Now:</Title>
+            <Title order={2}>The Old Way:</Title>
             <Stack>
               <OldWayExamples />
             </Stack>
