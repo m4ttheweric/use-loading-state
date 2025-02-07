@@ -3,10 +3,11 @@ import {
   CodeHighlightTabsCode,
   CodeHighlightTabsProps,
 } from '@mantine/code-highlight';
-import { Anchor, Card, Group, Stack, Text, Title } from '@mantine/core';
-import { FaLink } from 'react-icons/fa';
+import { Card, Stack, Text, Title } from '@mantine/core';
 
-import '../code-snippets/code-strings';
+import '../examples/code-strings';
+
+import { TitleLink } from './TitleLink';
 
 type ExampleProps = {
   hashLink: string;
@@ -30,12 +31,7 @@ export function Example({
 }: ExampleProps) {
   return (
     <Stack id={hashLink.replace('#', '')}>
-      <Anchor href={hashLink}>
-        <Group>
-          <FaLink />
-          <Title order={2}>{title}</Title>
-        </Group>
-      </Anchor>
+      <TitleLink hashLink={hashLink} title={title} order={2} />
       {description && <Text>{description}</Text>}
       <Card withBorder>
         <Stack align="center" p={'lg'} mb={'md'}>

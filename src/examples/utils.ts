@@ -1,4 +1,4 @@
-export function mockNetworkRequest(props: { throwError?: boolean } = {}) {
+export function mockAsyncOperation(props: { throwError?: boolean } = {}) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (props.throwError) {
@@ -9,8 +9,8 @@ export function mockNetworkRequest(props: { throwError?: boolean } = {}) {
   });
 }
 
-export function mockNetworkRequestError() {
-  return mockNetworkRequest({ throwError: true });
+export function mockAsyncError() {
+  return mockAsyncOperation({ throwError: true });
 }
 
 //an array of 10 items that has an id property and a name

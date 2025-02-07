@@ -14,12 +14,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Path to the source TSX file
-const inputFilePath = path.resolve(__dirname, '../src/code-snippets/**/*.tsx');
+const inputFilePath = path.resolve(__dirname, '../src/examples/**/*.tsx');
 
 // Path to the output TypeScript file
 const outputFilePath = path.resolve(
   __dirname,
-  '../src/code-snippets/code-strings.ts'
+  '../src/examples/code-strings.ts'
 );
 
 const extractedFunctions = getFunctionsToString(inputFilePath);
@@ -38,6 +38,6 @@ ${Object.entries(extractedFunctions)
 fs.writeFileSync(outputFilePath, outputContent.trim(), 'utf-8');
 
 // run the prettier script on the file
-execute('bun run prettier --write src/code-snippets/code-strings.ts');
+execute('bun run prettier --write src/examples/code-strings.ts');
 
 console.log(`Extracted functions saved to ${outputFilePath}`);
