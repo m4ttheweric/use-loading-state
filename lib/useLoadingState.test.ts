@@ -1,9 +1,11 @@
 import { act } from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 
 import { useLoadingState } from './useLoadingState';
 
 const mockTask = vi.fn(() => new Promise(resolve => setTimeout(resolve, 1000)));
+
+const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const renderUseLoadingState = () => {
   return renderHook(() => {
@@ -23,24 +25,25 @@ describe('useLoadingState', () => {
     const { result } = renderUseLoadingState();
 
     let promise: Promise<unknown>;
-
     act(() => {
-      promise = result.current.runTask(() => mockTask()); // Call runTask with mockTask
+      promise = result.current.runTask(() => mockTask());
     });
 
-    expect(result.current.isLoading).toBe(true); // isLoading should be true after calling runTask
+    // Use `waitFor` to ensure state updates before asserting
+    await waitFor(() => expect(result.current.isLoading).toBe(true));
 
     await act(async () => {
-      await promise; // Wait for the task to complete
+      await promise;
     });
 
-    expect(result.current.isLoading).toBe(false); // isLoading should be false after task completion
+    expect(result.current.isLoading).toBe(false);
   });
 
-  it('should handle loading IDs correctly', async () => {
+  it('should handle multiple loading IDs and tasks correctly', async () => {
     const { result } = renderUseLoadingState();
 
     let promise: Promise<unknown>;
+    let promise2: Promise<unknown>;
 
     act(() => {
       promise = result.current.runTask({
@@ -49,25 +52,56 @@ describe('useLoadingState', () => {
       });
     });
 
-    expect(result.current.isIdLoading('task1')).toBe(true);
-    expect(result.current.loadingIds.has('task1')).toBe(true);
+    await pause(500);
 
-    await act(async () => {
-      await promise; // Wait for the task to complete
+    act(() => {
+      promise2 = result.current.runTask({
+        loadingId: 'task2',
+        task: () => mockTask(),
+      });
     });
 
+    // expect task1 to be loading
+    await waitFor(() => expect(result.current.isIdLoading('task1')).toBe(true));
+    await waitFor(() =>
+      expect(result.current.loadingIds.has('task1')).toBe(true)
+    );
+
+    // expect task2 to be loading
+    await waitFor(() => expect(result.current.isIdLoading('task2')).toBe(true));
+    await waitFor(() =>
+      expect(result.current.loadingIds.has('task2')).toBe(true)
+    );
+
+    await act(async () => {
+      await promise;
+    });
+
+    // expect task1 to be not loading
     expect(result.current.isIdLoading('task1')).toBe(false);
     expect(result.current.loadingIds.has('task1')).toBe(false);
+
+    // expect task2 to still be loading
+    expect(result.current.isIdLoading('task2')).toBe(true);
+    expect(result.current.loadingIds.has('task2')).toBe(true);
+
+    await act(async () => {
+      await promise2;
+    });
+
+    // expect task2 to be not loading
+    expect(result.current.isIdLoading('task2')).toBe(false);
+    expect(result.current.loadingIds.has('task2')).toBe(false);
   });
 
   it('should throw an error if no task is provided', async () => {
     const { result } = renderUseLoadingState();
 
-    await expect(async () => {
-      await act(async () => {
+    await expect(
+      act(async () => {
         await result.current.runTask();
-      });
-    }).rejects.toThrowError(
+      })
+    ).rejects.toThrowError(
       'useLoadingState task was not defined by the caller or the default task.'
     );
   });
@@ -76,11 +110,11 @@ describe('useLoadingState', () => {
     const failingTask = vi.fn(() => Promise.reject(new Error('Task failed')));
     const { result } = renderUseLoadingState();
 
-    await expect(async () => {
-      await act(async () => {
-        await result.current.runTask(() => failingTask());
-      });
-    }).rejects.toThrow('Task failed');
+    await act(async () => {
+      await expect(result.current.runTask(() => failingTask())).rejects.toThrow(
+        'Task failed'
+      );
+    });
 
     expect(result.current.isLoading).toBe(false);
   });
