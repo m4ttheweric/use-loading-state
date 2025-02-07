@@ -53,6 +53,7 @@
     "@inquirer/prompts": "^7.3.1",
     "@mantine/code-highlight": "^7.16.2",
     "@mantine/core": "^7.16.2",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/node": "^22.13.1",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
