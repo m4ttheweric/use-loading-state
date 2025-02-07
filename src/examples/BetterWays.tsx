@@ -6,15 +6,11 @@
  */
 
 import { useState } from 'react';
-import { Alert, Button, Group, Popover, Stack, Switch } from '@mantine/core';
+import { Alert, Button, Group, Popover, Stack, Text } from '@mantine/core';
 import { PiWarningCircleDuotone } from 'react-icons/pi';
 
 import { useLoadingState } from '../../lib/useLoadingState';
-import {
-  mockItems,
-  mockNetworkRequest,
-  mockNetworkRequestError,
-} from './utils';
+import { mockAsyncError, mockAsyncOperation, mockItems } from './utils';
 
 // @extract
 export function SimpleCase() {
@@ -22,7 +18,7 @@ export function SimpleCase() {
 
   async function handleClick() {
     // wrap your async task in the runTask function like this for simple cases.
-    await runTask(() => mockNetworkRequest());
+    await runTask(() => mockAsyncOperation());
   }
 
   return (
@@ -38,6 +34,38 @@ export function SimpleCase() {
 }
 
 // @extract
+export function ManyItems() {
+  // track as many loading states as you want with a single line of code:
+  const [runTask, { isIdLoading }] = useLoadingState();
+
+  function handleItemClick(id: string) {
+    // this time, runTask takes an object with a task and loadingId to identify the task
+    runTask({
+      loadingId: id,
+      task: () => mockAsyncOperation(),
+    });
+  }
+
+  return (
+    <>
+      <Group wrap="wrap">
+        {mockItems.map(item => (
+          <Button
+            // use the isIdLoading function to determine if a specific task is loading
+            loading={isIdLoading(item.id)}
+            onClick={() => handleItemClick(item.id)}
+            size="xs"
+            key={item.id}
+          >
+            Run Item {item.id}'s Task
+          </Button>
+        ))}
+      </Group>
+    </>
+  );
+}
+
+// @extract
 export function ErrorHandling() {
   const [runTask, { isLoading }] = useLoadingState();
   const [error, setError] = useState<Error | null>(null);
@@ -46,18 +74,22 @@ export function ErrorHandling() {
     setError(null);
 
     // look, no error handling is required!
-    await runTask(() => mockNetworkRequestError());
+    await runTask(() => mockAsyncError());
   }
 
   async function errorHandling() {
     setError(null);
 
     // handle errors like this:
-    await runTask(() => mockNetworkRequestError().catch(e => setError(e)));
+    await runTask(() => mockAsyncError().catch(e => setError(e)));
   }
 
   return (
     <Stack align="center">
+      <Text>
+        Both of these buttons will initiate async functions that will throw an
+        error. Take a look at the code to see how to handle errors.
+      </Text>
       <Button loading={isLoading} onClick={noHandling} size="xs">
         No Error Handling
       </Button>
@@ -79,47 +111,5 @@ export function ErrorHandling() {
         </Popover.Dropdown>
       </Popover>
     </Stack>
-  );
-}
-
-// @extract
-export function ManyItems() {
-  // track as many loading states as you want with a single line of code:
-  const [runTask, { isLoading, isIdLoading }] = useLoadingState();
-  const [oneAtATime, setOneAtATime] = useState(false);
-
-  function handleItemClick(id: string) {
-    // this time, runTask takes an object with a task and loadingId to identify the task
-    runTask({
-      loadingId: id,
-      task: () => mockNetworkRequest(),
-    });
-  }
-
-  return (
-    <>
-      <Group>
-        <Switch
-          onChange={e => setOneAtATime(e.currentTarget.checked)}
-          checked={oneAtATime}
-        />
-        Only allow one at a time to load
-      </Group>
-      <Group wrap="wrap">
-        {mockItems.map(item => (
-          <Button
-            // use the isIdLoading function to determine if a specific task is loading
-            loading={isIdLoading(item.id)}
-            // optionally, you could disable the button if another task is loading
-            disabled={oneAtATime && !isIdLoading(item.id) && isLoading}
-            onClick={() => handleItemClick(item.id)}
-            size="xs"
-            key={item.id}
-          >
-            Run Item {item.id}'s Task
-          </Button>
-        ))}
-      </Group>
-    </>
   );
 }
