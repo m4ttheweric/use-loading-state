@@ -16,9 +16,9 @@ import { mockAsyncError, mockAsyncOperation, mockItems } from './utils';
 export function SimpleCase() {
   const [runTask, { isLoading }] = useLoadingState();
 
-  async function handleClick() {
+  function handleClick() {
     // wrap your async task in the runTask function like this for simple cases.
-    await runTask(() => mockAsyncOperation());
+    runTask(() => mockAsyncOperation());
   }
 
   return (
@@ -66,17 +66,17 @@ export function ErrorHandling() {
     'no-handling' | 'error-handled'
   >();
 
-  async function noHandling() {
+  function noHandling() {
     // look, no error handling is required!
-    await runTask({
+    runTask({
       loadingId: 'no-handling',
       task: () => mockAsyncError(),
     });
   }
 
-  async function errorHandling() {
+  function errorHandling() {
     // handle errors like this:
-    await runTask({
+    runTask({
       loadingId: 'error-handled',
       task: () =>
         mockAsyncError().catch(e => {
