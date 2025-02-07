@@ -6,51 +6,15 @@
  */
 
 import { useState } from 'react';
-import { Alert, Button, Group, Stack, Switch, Text } from '@mantine/core';
+import { Alert, Button, Group, Popover, Stack, Switch } from '@mantine/core';
 import { PiWarningCircleDuotone } from 'react-icons/pi';
 
 import { useLoadingState } from '../../lib/useLoadingState';
-
-function mockNetworkRequest(props: { throwError?: boolean } = {}) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (props.throwError) {
-        reject(new Error('Some kind of mysterious network error!'));
-      }
-      resolve(true);
-    }, 3000);
-  });
-}
-
-function mockNetworkRequestError() {
-  return mockNetworkRequest({ throwError: true });
-}
-
-// @extract
-export function OldWay() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function handleClick() {
-    // need to manually set loading state
-    setIsLoading(true);
-
-    try {
-      await mockNetworkRequest();
-
-      // your code is littered with loading state management
-      setIsLoading(false);
-    } catch {
-      // you have to remember to set loading state back to false in your catch block
-      setIsLoading(false);
-    }
-  }
-
-  return (
-    <Button loading={isLoading} onClick={handleClick} size="xs">
-      Click To Run Task
-    </Button>
-  );
-}
+import {
+  mockItems,
+  mockNetworkRequest,
+  mockNetworkRequestError,
+} from './utils';
 
 // @extract
 export function SimpleCase() {
@@ -94,33 +58,29 @@ export function ErrorHandling() {
 
   return (
     <Stack align="center">
-      <Text>Both buttons use the same loading state</Text>
       <Button loading={isLoading} onClick={noHandling} size="xs">
         No Error Handling
       </Button>
-      <Button
-        loading={isLoading}
-        onClick={errorHandling}
-        size="xs"
-        color="teal"
-      >
-        With Error Handling
-      </Button>
-      {error && (
-        <Alert icon={<PiWarningCircleDuotone />} color={'red'}>
-          <Text fw={500}>You handled this error:</Text>
-          {error.message}
-        </Alert>
-      )}
+      <Popover withArrow opened={!!error}>
+        <Popover.Target>
+          <Button
+            loading={isLoading}
+            onClick={errorHandling}
+            size="xs"
+            color="teal"
+          >
+            With Error Handling
+          </Button>
+        </Popover.Target>
+        <Popover.Dropdown p={0} bg={'var(--mantine-color-red-light)'}>
+          <Alert icon={<PiWarningCircleDuotone />} color={'red'}>
+            {error?.message}
+          </Alert>
+        </Popover.Dropdown>
+      </Popover>
     </Stack>
   );
 }
-
-//an array of 10 items that has an id property and a name
-const data = Array.from({ length: 10 }, (_, i) => ({
-  id: i.toString(),
-  name: `Item ${i}`,
-}));
 
 // @extract
 export function ManyItems() {
@@ -145,19 +105,21 @@ export function ManyItems() {
         />
         Only allow one at a time to load
       </Group>
-      {data.map(item => (
-        <Button
-          // use the isIdLoading function to determine if a specific task is loading
-          loading={isIdLoading(item.id)}
-          // optionally, you could disable the button if another task is loading
-          disabled={oneAtATime && !isIdLoading(item.id) && isLoading}
-          onClick={() => handleItemClick(item.id)}
-          size="xs"
-          key={item.id}
-        >
-          Run Item {item.id}'s Task
-        </Button>
-      ))}
+      <Group wrap="wrap">
+        {mockItems.map(item => (
+          <Button
+            // use the isIdLoading function to determine if a specific task is loading
+            loading={isIdLoading(item.id)}
+            // optionally, you could disable the button if another task is loading
+            disabled={oneAtATime && !isIdLoading(item.id) && isLoading}
+            onClick={() => handleItemClick(item.id)}
+            size="xs"
+            key={item.id}
+          >
+            Run Item {item.id}'s Task
+          </Button>
+        ))}
+      </Group>
     </>
   );
 }

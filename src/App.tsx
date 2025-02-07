@@ -13,16 +13,13 @@ import {
 import { SiMantine } from 'react-icons/si';
 
 import {
-  ErrorHandlingCode,
-  ManyItemsCode,
-  SimpleCaseCode,
-} from './code-snippets/code-strings';
-import {
   ErrorHandling,
   ManyItems,
   SimpleCase,
-} from './code-snippets/example-code';
+} from './code-snippets/BetterWays';
+import { BetterWaysCode } from './code-snippets/code-strings';
 import { Example } from './components/Example';
+import { OldWayExamples } from './components/OldWayExamples';
 import { SocialLinks } from './components/SocialLinks';
 
 function App() {
@@ -47,7 +44,11 @@ function App() {
                 states in your React components for async tasks.
               </Blockquote>
             </Stack>
-            <Title order={2}>Examples:</Title>
+            <Title order={2}>The Old Way:</Title>
+            <Stack>
+              <OldWayExamples />
+            </Stack>
+            <Title order={2}>A Better Way:</Title>
             <Stack gap={'xl'}>
               <Example
                 renderExample={<SimpleCase />}
@@ -57,12 +58,12 @@ function App() {
                   <>
                     For simple cases, wrap your async task in the{' '}
                     <Code>runTask</Code> function. The loading state is managed
-                    for you.
+                    for you based on the returned promise of your task.
                   </>
                 }
                 code={{
                   fileName: 'SimpleCase.tsx',
-                  code: SimpleCaseCode,
+                  code: BetterWaysCode.SimpleCase,
                   language: 'tsx',
                 }}
               />
@@ -72,15 +73,15 @@ function App() {
                 title="Error Handling"
                 description={
                   <>
-                    Under the hood, any errors in your task function are
-                    handled, the loading flag is set, and then errors are
-                    re-thrown. What this means is that even if you don't handle
-                    errors (you should!), your loading state will still work!
+                    Under the hood, any errors in your async task function are
+                    handled, the loading flag is managed, and then errors are
+                    re-thrown. What this means is your loading state will work,
+                    regardless if there are errors!
                   </>
                 }
                 code={{
                   fileName: 'ErrorHandling.tsx',
-                  code: ErrorHandlingCode,
+                  code: BetterWaysCode.ErrorHandling,
                   language: 'tsx',
                 }}
               />
@@ -105,7 +106,7 @@ function App() {
                 }
                 code={{
                   fileName: 'ManyItems.tsx',
-                  code: ManyItemsCode,
+                  code: BetterWaysCode.ManyItems,
                   language: 'tsx',
                 }}
               />
