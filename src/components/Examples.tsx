@@ -19,9 +19,8 @@ export function Examples() {
           title="Single Item"
           description={
             <>
-              For simple cases, wrap your async task in the <Code>runTask</Code>{' '}
-              function. The loading state is managed for you based on the
-              returned promise of your task.
+              Just wrap your async task in the <Code>runTask</Code> function and
+              loading state is automatically managed for you!
             </>
           }
           code={{
@@ -44,7 +43,6 @@ export function Examples() {
               <List
                 ml={'lg'}
                 spacing="xs"
-                size="sm"
                 center
                 icon={
                   <ThemeIcon color="teal" size={24} radius="xl">
@@ -80,7 +78,7 @@ export function Examples() {
               <Text>
                 What happens when your async function throws an error?
               </Text>
-              <List ml={'lg'} spacing="xs" size="sm" center type="ordered">
+              <List ml={'lg'} spacing="xs" center type="ordered">
                 <List.Item>
                   Error are handled by the <Code>runTask</Code> function
                   internally so the loading state can be updated safely.
@@ -94,7 +92,6 @@ export function Examples() {
               <List
                 ml={'lg'}
                 spacing="xs"
-                size="sm"
                 center
                 icon={
                   <ThemeIcon color="teal" size={24} radius="xl">
@@ -103,11 +100,11 @@ export function Examples() {
                 }
               >
                 <List.Item>
-                  Your loading state just works -- even if an error is thrown.
+                  Your loading state just works -- even if an error is thrown 🤩
                 </List.Item>
                 <List.Item>
                   You handle the error however you want without needing to worry
-                  about your loading state!
+                  about your loading state 🎉
                 </List.Item>
               </List>
             </Stack>

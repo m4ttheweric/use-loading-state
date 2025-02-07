@@ -9,12 +9,7 @@ export const BetterWaysCode = {
   }
 
   return (
-    <Button
-      // use returned isLoading flag to set the loading state in your UI:
-      loading={isLoading}
-      onClick={handleClick}
-      size="xs"
-    >
+    <Button loading={isLoading} onClick={handleClick}>
       Click To Run Task
     </Button>
   );
@@ -39,7 +34,6 @@ export const BetterWaysCode = {
             // use the isIdLoading function to determine if a specific task is loading
             loading={isIdLoading(item.id)}
             onClick={() => handleItemClick(item.id)}
-            size="xs"
             key={item.id}
           >
             Run Item {item.id}'s Task
@@ -50,49 +44,52 @@ export const BetterWaysCode = {
   );
 }`,
   ErrorHandling: `function ErrorHandling() {
-  const [runTask, { isLoading }] = useLoadingState();
-  const [error, setError] = useState<Error | null>(null);
+  const [runTask, { isIdLoading }] = useLoadingState<
+    // useLoadingState accepts generics so you can specify your own loadingId types
+    'no-handling' | 'error-handled'
+  >();
 
   async function noHandling() {
-    setError(null);
-
     // look, no error handling is required!
-    await runTask(() => mockAsyncError());
+    await runTask({
+      loadingId: 'no-handling',
+      task: () => mockAsyncError(),
+    });
   }
 
   async function errorHandling() {
-    setError(null);
-
     // handle errors like this:
-    await runTask(() => mockAsyncError().catch(e => setError(e)));
+    await runTask({
+      loadingId: 'error-handled',
+      task: () =>
+        mockAsyncError().catch(e => {
+          // handle the error however you want
+          notifications.show({
+            color: 'red',
+            message: e.message,
+            icon: <IoMdAlert />,
+            position: 'top-center',
+          });
+        }),
+    });
   }
 
   return (
     <Stack align="center">
       <Text>
-        Both of these buttons will initiate async functions that will throw an
-        error. Take a look at the code to see how to handle errors.
+        This Error is not handled and will show up in the browser console:
       </Text>
-      <Button loading={isLoading} onClick={noHandling} size="xs">
+      <Button loading={isIdLoading('no-handling')} onClick={noHandling}>
         No Error Handling
       </Button>
-      <Popover withArrow opened={!!error}>
-        <Popover.Target>
-          <Button
-            loading={isLoading}
-            onClick={errorHandling}
-            size="xs"
-            color="teal"
-          >
-            With Error Handling
-          </Button>
-        </Popover.Target>
-        <Popover.Dropdown p={0} bg={'var(--mantine-color-red-light)'}>
-          <Alert icon={<PiWarningCircleDuotone />} color={'red'}>
-            {error?.message}
-          </Alert>
-        </Popover.Dropdown>
-      </Popover>
+      <Text>This Error is handled and will show a notification:</Text>
+      <Button
+        loading={isIdLoading('error-handled')}
+        onClick={errorHandling}
+        color="teal"
+      >
+        Error Handled
+      </Button>
     </Stack>
   );
 }`,

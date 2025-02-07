@@ -1,4 +1,4 @@
-import { createTheme, Group } from '@mantine/core';
+import { Button, createTheme, Group } from '@mantine/core';
 
 export const mantineTheme = createTheme({
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
@@ -13,6 +13,11 @@ export const mantineTheme = createTheme({
     Group: Group.extend({
       defaultProps: {
         wrap: 'nowrap',
+      },
+    }),
+    Button: Button.extend({
+      defaultProps: {
+        size: 'xs',
       },
     }),
   },
