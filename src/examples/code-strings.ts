@@ -61,16 +61,15 @@ export const BetterWaysCode = {
     // handle errors like this:
     runTask({
       loadingId: 'error-handled',
-      task: () =>
-        mockAsyncError().catch(e => {
-          // handle the error however you want
-          notifications.show({
-            color: 'red',
-            message: e.message,
-            icon: <IoMdAlert />,
-            position: 'top-center',
-          });
-        }),
+      task: () => mockAsyncError(),
+    }).catch(e => {
+      // handle the error here...
+      notifications.show({
+        color: 'red',
+        message: e.message,
+        icon: <IoMdAlert />,
+        position: 'top-center',
+      });
     });
   }
 
